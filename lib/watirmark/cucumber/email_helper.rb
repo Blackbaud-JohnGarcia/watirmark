@@ -26,6 +26,12 @@ module EmailHelper
         email[model.model_name]
       end
 
+      def get_email(model, options_hash, timeout=30)
+        Kernel.raise ArgumentError, 'The options provided are not in the form of a hash, i.e. {:subject => "subject"}' unless options_hash.is_a?(Hash)
+        desired_email = qa_inbox(model).get_email(options_hash, timeout)
+        email[model.model_name] = desired_email
+      end
+
       # Read the contents of an email, cache it and delete the email
       def read_email(model, options_hash, timeout=30)
         Kernel.raise ArgumentError, 'The options provided are not in the form of a hash, i.e. {:subject => "subject"}' unless options_hash.is_a?(Hash)
